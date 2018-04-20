@@ -135,7 +135,7 @@ def description_filter(description):
     word_split = filter_2.split()
     word_filter = []
     for word in word_split:
-        if '.com' in word:
+        if '.com' in word or '(line truncated)' in word:
             continue
         else:
             word_filter.append(word)
