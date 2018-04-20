@@ -3,21 +3,20 @@ from goodreads import client
 
 valid_lower = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
 valid_upper = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}
+valid_number = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 
 def main():
     gc = client.GoodreadsClient('V9bxgEm8ovI8ceia1uaLbA', 'H3ogn5JiQvVrYAwVBFsPnBCAuwQdi8dAo9cBQpAsP8')
 
     # genre files
-    comedy_file = open('data/genre/comedy1.txt', 'w')
     fantasy_file = open('data/genre/fantasy1.txt', 'w')
     mystery_file = open('data/genre/mystery1.txt', 'w')
     philosophy_file = open('data/genre/philosophy1.txt', 'w')
     romance_file = open('data/genre/romance1.txt', 'w')
     science_fiction_file = open('data/genre/science_fiction1.txt', 'w')
 
-    genre_count = {'comedy': 0, 'fantasy': 0, 'mystery': 0, 'philosophy': 0, 'romance': 0, 'science-fiction': 0}
-    comedy = False
+    genre_count = {'fantasy': 4545, 'mystery': 3640, 'philosophy': 2525, 'romance': 3377, 'science-fiction': 2678}
     fantasy = False
     mystery = False
     philosophy = False
@@ -32,10 +31,9 @@ def main():
             print('title:', book.title)
             print('rating:', book.average_rating)
             print('description:', book.description)
-            print('filtered_description:', description_filter(book.description))
 
             # check language
-            if book.language_code != 'eng':
+            if book.language_code != 'eng' and book.language_code != 'en-US':
                 index += 1
                 print('skip: language:', book.language_code)
                 print()
@@ -51,12 +49,6 @@ def main():
 
             # check genre and write to file
             for shelf in book.popular_shelves:
-                if 'comedy' == shelf.name and not comedy:
-                    comedy_file.write(description + '\n')
-                    genre_count['comedy'] += 1
-                    if genre_count['comedy'] == 5000:
-                        comedy = True
-
                 if 'fantasy' == shelf.name and not fantasy:
                     fantasy_file.write(description + '\n')
                     genre_count['fantasy'] += 1
@@ -87,7 +79,6 @@ def main():
                     if genre_count['science-fiction'] == 5000:
                         science_fiction = True
 
-            print('comedy: ', genre_count['comedy'])
             print('fantasy: ', genre_count['fantasy'])
             print('mystery: ', genre_count['mystery'])
             print('philosophy: ', genre_count['philosophy'])
@@ -95,7 +86,7 @@ def main():
             print('science-fiction: ', genre_count['science-fiction'])
             print()
 
-            if comedy and fantasy and mystery and philosophy and romance and science_fiction:
+            if fantasy and mystery and philosophy and romance and science_fiction:
                 break
             index += 1
         except:
@@ -105,7 +96,6 @@ def main():
             pass
 
     # close files
-    comedy_file.close()
     fantasy_file.close()
     mystery_file.close()
     philosophy_file.close()
@@ -118,26 +108,26 @@ def description_filter(description):
     filter_1 = ''
     is_open = False
     for i in range(len(description)):
-        letter = description[i]
+        character = description[i]
         if is_open:
-            if letter == '>':
+            if character == '>':
                 is_open = False
                 filter_1 += ' '
         else:
-            if letter == '<':
+            if character == '<':
                 is_open = True
             else:
-                filter_1 += letter
+                filter_1 += character
 
     # check for any crazy characters
     filter_2 = ''
     for i in range(len(filter_1)):
-        letter = filter_1[i]
-        if is_alpha(letter):
-            filter_2 += letter
+        character = filter_1[i]
+        if is_valid(character):
+            filter_2 += character
         else:
-            if letter in string.punctuation or letter == ' ':
-                filter_2 += letter
+            if character in string.punctuation or character == ' ':
+                filter_2 += character
             else:
                 filter_2 += ' '
 
@@ -154,10 +144,12 @@ def description_filter(description):
     return filter_3
 
 
-def is_alpha(letter):
-    if letter in valid_lower:
+def is_valid(character):
+    if character in valid_lower:
         return True
-    elif letter in valid_upper:
+    elif character in valid_upper:
+        return True
+    elif character in valid_number:
         return True
     return False
 
