@@ -57,7 +57,7 @@ def main():
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     # define the checkpoint
-    file_path = "models/romance/romance-{epoch:02d}-{loss:.4f}.hdf5"
+    file_path = "models/romance/standard_cpu/romance-{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(file_path, monitor='loss', verbose=1, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
 
