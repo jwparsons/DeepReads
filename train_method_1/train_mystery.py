@@ -12,7 +12,7 @@ with warnings.catch_warnings():
 
 def main():
     # load data
-    filename = "data/final/mystery.txt"
+    filename = "../data/final/mystery.txt"
     raw_text = open(filename).read().lower()
 
     # create mapping of unique chars to integers
@@ -57,7 +57,7 @@ def main():
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     # define the checkpoint
-    file_path = "models/mystery/mystery-{epoch:02d}-{loss:.4f}.hdf5"
+    file_path = "../models/mystery/mystery-{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(file_path, monitor='loss', verbose=1, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
 

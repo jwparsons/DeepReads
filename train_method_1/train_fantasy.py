@@ -8,11 +8,13 @@ with warnings.catch_warnings():
     from keras.layers import LSTM
     from keras.callbacks import ModelCheckpoint
     from keras.utils import np_utils
+    # from keras.utils import multi_gpu_model
+    from patch.keras_patch import multi_gpu_model
 
 
 def main():
     # load data
-    filename = "data/final/science_fiction.txt"
+    filename = "../data/final/fantasy.txt"
     raw_text = open(filename).read().lower()
 
     # create mapping of unique chars to integers
@@ -49,20 +51,25 @@ def main():
 
     # define the LSTM model
     model = Sequential()
-    model.add(LSTM(256, input_shape=(x.shape[1], x.shape[2]), return_sequences=True))
+    model.add(LSTM(700, input_shape=(x.shape[1], x.shape[2]), return_sequences=True))
     model.add(Dropout(0.2))
-    model.add(LSTM(256))
+    model.add(LSTM(700, return_sequences=True))
+    model.add(Dropout(0.2))
+    model.add(LSTM(700))
     model.add(Dropout(0.2))
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
+    parallel_model = multi_gpu_model(model, gpus=2)
+    parallel_model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+
     # define the checkpoint
-    file_path = "models/science_fiction/science_fiction-{epoch:02d}-{loss:.4f}.hdf5"
+    file_path = "../models/fantasy/gigantic_gpu/fantasy-{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(file_path, monitor='loss', verbose=1, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
 
     # fit the model
-    model.fit(x, y, epochs=20, batch_size=50, callbacks=callbacks_list)
+    parallel_model.fit(x, y, epochs=20, batch_size=50, callbacks=callbacks_list)
 
 
 if __name__ == "__main__":

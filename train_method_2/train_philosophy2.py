@@ -12,7 +12,7 @@ with warnings.catch_warnings():
 
 def main():
     # loading of data
-    text = (open("data/final/philosophy.txt").read())
+    text = (open("../data/final/philosophy.txt").read())
     text = text.lower()
 
     # creating character/word mappings
@@ -45,7 +45,7 @@ def main():
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     model.fit(x_modified, y_modified, epochs=20, batch_size=50)
-    model.save_weights('models/philosophy/standard_cpu2/philosophy.h5')
+    model.save_weights('../models/philosophy/standard_cpu2/philosophy.h5')
 
 
 if __name__ == "__main__":

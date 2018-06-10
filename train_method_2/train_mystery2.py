@@ -12,12 +12,11 @@ with warnings.catch_warnings():
 
 def main():
     # loading of data
-    text = (open("data/final/fantasy.txt").read())
+    text = (open("../data/final/mystery.txt").read())
     text = text.lower()
 
     # creating character/word mappings
     characters = sorted(list(set(text)))
-    n_to_char = {n: char for n, char in enumerate(characters)}
     char_to_n = {char: n for n, char in enumerate(characters)}
 
     # data pre-processing
@@ -43,29 +42,10 @@ def main():
     model.add(LSTM(256))
     model.add(Dropout(0.2))
     model.add(Dense(y_modified.shape[1], activation='softmax'))
-    model.load_weights('models/fantasy/standard_cpu2/fantasy.h5')
     model.compile(loss='categorical_crossentropy', optimizer='adam')
 
-    string_mapped = x[99]
-    full_string = [n_to_char[value] for value in string_mapped]
-    print(''.join(full_string))
-    # generating characters
-    for i in range(400):
-        x = np.reshape(string_mapped, (1, len(string_mapped), 1))
-        x = x / float(len(characters))
-
-        pred_index = np.argmax(model.predict(x, verbose=0))
-        seq = [n_to_char[value] for value in string_mapped]
-        full_string.append(n_to_char[pred_index])
-
-        string_mapped.append(pred_index)
-        string_mapped = string_mapped[1:len(string_mapped)]
-
-    # combining text
-    txt = ""
-    for char in full_string:
-        txt = txt + char
-    print(txt)
+    model.fit(x_modified, y_modified, epochs=20, batch_size=50)
+    model.save_weights('../models/mystery/standard_cpu2/mystery.h5')
 
 
 if __name__ == "__main__":
