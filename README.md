@@ -46,9 +46,7 @@ If a particular Fantasy author would like to practice writing Fantasy or is in n
 
 ## Results
 ### Fantasy
-* "Barnes Penguin from the fairy tales in the dark hand of destruction. His difference was about to rule the first Standy that he leaves the children of a terrible creature."
-* "The master of the terrible prince of light. The real family of the moon search of the dead. Leviday, the dreaded Farmer s rules on the most published injured King and everything Morgoth? As Inferno of the World Bomb is a way to save why she has been such a prophecy of war and enchanted."
-* "The novel that has come to help begin to change the world of the demonic interest of the Guide of the Holy 's Grey Brothers comes to find a book in a fire, the blood of the empire that seems to take the inner secret of the power by the most powerful boy from the secret of the warrior."
+![alt text](https://jwparsons.bitbucket.io/style/images/projects/deepreads/fantasy.png "Fantasy Example")
 
 ### Mystery
 \<to be added\>
